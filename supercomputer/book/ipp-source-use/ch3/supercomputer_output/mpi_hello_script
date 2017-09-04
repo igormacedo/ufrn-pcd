@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#SBATCH --job-name=mpi_hello
+#SBATCH --time=0-0:10
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=32
+#SBATCH --cpus-per-task=1
+#SBATCH --exclusive
+#SBATCH --qos=qos3
+
+srun ./mpi_hello
+
