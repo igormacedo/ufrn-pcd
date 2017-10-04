@@ -1,0 +1,6 @@
+With n = 1024000000 trapezoids, our estimate
+of the integral from 0.000000 to 3000000000.000000 = 9.000000000000079e+27
+
+real	0m1.419s
+user	0m0.011s
+sys	0m0.034s

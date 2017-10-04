@@ -27,6 +27,7 @@
 
 /* We'll be using MPI routines, definitions, etc. */
 #include <mpi.h>
+#include <math.h>
 
 /* Calculate local integral  */
 double Trap(double left_endpt, double right_endpt, int trap_count, 
@@ -36,10 +37,10 @@ double Trap(double left_endpt, double right_endpt, int trap_count,
 double f(double x); 
 
 int main(void) {
-   int my_rank, comm_sz, n = 1024000000, local_n;   
-   double a = 0.0, b = 3000000000.0, h, local_a, local_b;
+   int my_rank, comm_sz, n = 1024, local_n;   
+   double a = 0.0, b = 3000.0, h, local_a, local_b;
    double local_int, total_int;
-   int source; 
+   //int source; 
 
    /* Let the system do what it needs to start up MPI */
    MPI_Init(NULL, NULL);
@@ -61,7 +62,7 @@ int main(void) {
    local_int = Trap(local_a, local_b, local_n, h);
 
    /* Add up the integrals calculated by each process */
-   if (my_rank != 0) { 
+   /*if (my_rank != 0) { 
       MPI_Send(&local_int, 1, MPI_DOUBLE, 0, 0, 
             MPI_COMM_WORLD); 
    } else {
@@ -71,10 +72,30 @@ int main(void) {
             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
          total_int += local_int;
       }
-   } 
+   }*/
+   
+   int i;
+   double neighbor_int= 0.0;
+   for(i = 0; i < (int)log2(comm_sz); i++)
+   {
+   		if (my_rank%((int)pow((double)2,(i+1))) == 0)
+   		{
+   			printf("Process %d Receiving from %d", my_rank, my_rank+(int)pow(2,i));
+   			MPI_Recv(&neighbor_int, 1, MPI_DOUBLE, my_rank+(int)pow(2,i), 0,
+            MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+   			local_int = local_int + neighbor_int;
+   		}
+   		else
+   		{
+   			printf("Process %d sending to %d", my_rank, my_rank-(int)pow(2,i));
+   			MPI_Send(&local_int,1,MPI_DOUBLE,my_rank-(int)pow(2,i),0,MPI_COMM_WORLD);
+   			break;
+   		}
+	 }
 
    /* Print the result */
    if (my_rank == 0) {
+   		total_int = local_int;
       printf("With n = %d trapezoids, our estimate\n", n);
       printf("of the integral from %f to %f = %.15e\n",
           a, b, total_int);

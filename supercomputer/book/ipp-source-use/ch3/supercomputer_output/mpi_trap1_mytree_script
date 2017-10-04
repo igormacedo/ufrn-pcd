@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#SBATCH --job-name=mpi_hello
+#SBATCH --time=0-0:10
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --cpus-per-task=1
+
+time srun ./mpi_trap1_mytree
+
