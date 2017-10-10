@@ -1,0 +1,13 @@
+*~
+*/bin
+
+// latex files
+*.aux
+*.lof
+*.log
+*.lot
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+.DS_Store

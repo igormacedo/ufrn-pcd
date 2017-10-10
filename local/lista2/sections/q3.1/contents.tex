@@ -1,0 +1,14 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 3.1}
+
+What happens in the greetings program if, instead of \texttt{strlen(greeting) + 1}, we use \texttt{strlen(greeting)} for the length of the message being sent by processes \texttt{1, 2, ..., comm\_sz- 1} ? What happens if we use \texttt{MAX\_STRING} instead of \texttt{strlen(greeting) + 1} ? Can you explain these results?\\
+
+Neste caso, o \texttt{+ 1} indica que o caractere de terminação da string também deve ser incluido no envio da mensagem. Se substituirmos por apenas  \texttt{strlen(greeting)} a mensagem ainda será impressa corretamente, pois a função \texttt{strlen()} 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
