@@ -1,5 +1,6 @@
 *~
 */bin
+\._*
 
 // latex files
 *.aux
