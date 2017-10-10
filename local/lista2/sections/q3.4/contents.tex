@@ -8,7 +8,9 @@
 Modify the program that just prints a line of output from each process
 ( \texttt{mpi\_output.c} ) so that the output is printed in process rank order: process 0s output first, then process 1s, and so on.\\
 
+\lstinputlisting[language=C, firstline=1, lastline=27]{sections/q3.4/code.c}
 
+O princípio da resulução desta questão é perceber que para lidar com o não-determinismo do output de um programa MPI, nós devemos mandar todas as mensagens de saída para um único processo, neste caso o processo 0. Dessa forma, apenas um processo é responsável por gerenciar as mensagens de saída e, assim, podemos controlar a ordem de saída das mensagens.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../../relatorio"
