@@ -1,0 +1,40 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.5}
+
+In a binary tree, there is a unique shortest path from each node to the root. The length of this path is often called the depth of the node. A binary tree in which every nonleaf has two children is called a full binary tree, and a full binary tree in which every leaf has the same depth is sometimes called a complete binary tree. See Figure 3.14. Use the principle of mathematical induction to prove that if T is a complete binary tree with n leaves, then the depth of the leaves is log 2 (n).\\
+
+Para fazer a indução vamos considerar $\mathrm{log}_2(n) = d$, onde d é a profundidade.
+
+Então,
+\begin{equation}
+  \mathrm{log}_2(n) = d \implies 2^{d} = n
+\end{equation}
+
+Considerando o caso base em que d = 0,
+\begin{equation} \label{eq1}
+\begin{split}
+2^d & = n \\
+2^0 & = n \\
+2^0 & = 1
+\end{split}
+\end{equation}
+
+Tomamos que $d = k$ e assumimos que $2^k = n$ é verdadeiro. Então, aplicamos o passo de indução, onde $d = k + 1$, e para a próxima profundidade, $n_{i} = n_{i - 1}\cdot2$. Logo,
+\begin{equation}
+\begin{split}
+2^{k+1} & = n\cdot 2 \\
+        & = 2^{k} 2^{1} \\
+        & = 2^{k+1}
+\end{split}
+\end{equation}
+
+Portanto, $2^{d} = n$ e, logo $log_{2}(n) = d$, onde n é o número de folhas e d é a profundidade.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
