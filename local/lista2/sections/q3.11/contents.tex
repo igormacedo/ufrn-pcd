@@ -19,7 +19,7 @@ a. Devise a serial algorithm for computing the $n$ prefix sums of an array with 
 
 b. Parallelize your serial algorithm for a system with $n$ processes, each of which is storing one of the $x_{i}$s.
 
-c. Suppose $n = 2^{k}$ for some positive integer $k$. Can you devise a serial algorithm and a parallelization of the serial algorithm so that the parallel algorithm requires only $k$ communication phases
+c. Suppose $n = 2^{k}$ for some positive integer $k$. Can you devise a serial algorithm and a parallelization of the serial algorithm so that the parallel algorithm requires only $k$ communication phases?
 
 d. MPI provides a collective communication function, \texttt{MPI\_Scan} , that can be used to compute prefix sums:
 
@@ -41,7 +41,10 @@ a.
 b.
 \lstinputlisting[language=C]{sections/q3.11/code-b.c}
 
-c.
+c. \textbf{Serial}
+\lstinputlisting[language=C]{sections/q3.11/code-c1.c}
+\textbf{Paralelo}
+\lstinputlisting[language=C]{sections/q3.11/code-c2.c}
 
 d. \lstinputlisting[language=C]{sections/q3.11/code-d.c}
 

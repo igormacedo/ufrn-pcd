@@ -6,16 +6,16 @@
 void print_vec(int vec[], int n);
 
 int main(void) {
-    int count = 5;
-    int vec[count];
-    int sum[count];
     int comm_sz; /* Number of processes */
     int my_rank; /* My process rank */
-
     MPI_Init(NULL, NULL);
     MPI_Comm comm = MPI_COMM_WORLD;
     MPI_Comm_size(comm, &comm_sz);
     MPI_Comm_rank(comm, &my_rank);
+
+    int count = comm_sz;
+    int vec[count];
+    int sum[count];
 
     srand(my_rank+1);
     for(int i = 0; i < count; i++){
