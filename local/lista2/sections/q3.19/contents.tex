@@ -1,0 +1,39 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.19}
+
+\texttt{MPI\_Type\_indexed} can be used to build a derived datatype from arbitrary array elements. Its syntax is
+
+\begin{lstlisting}[language=C]
+int MPI_Type_indexed(
+    int           count                       /* in */,
+    int           array_of_blocklengths[]     /* in */,
+    int           array_of_displacements[]    /* in */,
+    MPI_Datatype  old_mpi_t                   /* in */,
+    MPI_Datatype* new_mpi_t_p                 /* out */);
+\end{lstlisting}
+
+Unlike \texttt{MPI\_Type\_create\_struct}, the displacements are measured in units of \texttt{old\_mpi\_t} - not bytes. Use \texttt{MPI\_Type\_indexed} to create a derived datatype that corresponds to the upper triangular part of a square matrix. For example, in the 4 x 4 matrix
+\begin{equation*}
+\left( \begin{array}{cccc}
+0 & 1 & 2 & 3\\
+4 & 5 & 6 & 7\\
+8 & 9 & 10 & 11\\
+12 & 13 & 14 & 15
+\end{array} \right)
+\end{equation*}
+
+the upper triangular part is the elements 0, 1, 2, 3, 5, 6, 7, 10, 11, 15. Process 0 should read in an n x n matrix as a one-dimensional array, create the derived datatype, and send the upper triangular part with a single call to \texttt{MPI\_Send}. Process 1 should receive the upper triangular part with a single call to \texttt{MPI\_Recv} and then print the data it received.
+
+\lstinputlisting[language=C]{sections/q3.19/code.c}
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

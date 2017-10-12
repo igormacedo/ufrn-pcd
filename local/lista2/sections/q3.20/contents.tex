@@ -1,0 +1,59 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.20}
+
+The functions \texttt{MPI\_Pack} and \texttt{MPI\_Unpack} provide an alternative to derived datatypes for grouping data. \texttt{MPI\_Pack} copies the data to be sent, one block at a time, into a user-provided buffer. The buffer can then be sent and received. After the data is received, \texttt{MPI\_Unpack} can be used to unpack it from the
+receive buffer. The syntax of \texttt{MPI\_Pack} is
+
+\begin{lstlisting}[language=C]
+      int MPI_Pack(
+            void*         in_buf        /* in     */,
+            int           in_buf_count  /* in     */,
+            MPI_Datatype  datatype      /* in     */,
+            void*        pack_buf       /* out    */,
+            int           pack_buf_sz   /* in     */,
+            int*          position_p    /* in/out */,
+            MPI_Comm      comm          /* in     */);
+\end{lstlisting}
+
+We could therefore pack the input data to the trapezoidal rule program with
+the following code:
+\begin{lstlisting}[language=C]
+    char pack_buf[100];
+    int position = 0;
+
+    MPI_Pack(&a, 1, MPI_DOUBLE, pack_buf, 100, &position, comm);
+    MPI_Pack(&b, 1, MPI_DOUBLE, pack_buf, 100, &position, comm);
+    MPI_Pack(&n, 1, MPI_INT, pack_buf, 100, &position, comm);
+\end{lstlisting}
+
+The key is the position argument. When \texttt{MPI\_Pack} is called, position should
+refer to the first available slot in pack buf . When \texttt{MPI\_Pack} returns, it refers
+to the first available slot after the data that was just packed, so after process 0
+executes this code, all the processes can call\texttt{MPI\_Bcast} :
+\begin{lstlisting}[language=C]
+    MPI_Bcast(pack_buf, 100, MPI_PACKED, 0, comm);
+\end{lstlisting}
+
+Note that the MPI datatype for a packed buffer is \texttt{MPI\_PACKED}. Now the other processes can unpack the data using: \texttt{MPI\_Unpack} :
+\begin{lstlisting}[language=C]
+    int MPI_Unpack(
+          void*         pack_buf      /* in     */,
+          int           pack_buf_sz   /* in     */,
+          int*          position_p    /* in/out */,
+          void*         out_buf       /* out    */,
+          int           out_buf_count /* in     */,
+          MPI_Datatype  datatype      /* in     */,
+          MPI_Comm      comm          /* in     */);
+\end{lstlisting}
+This can be used by “reversing” the steps in \texttt{MPI\_Pack} , that is, the data is unpacked one block at a time starting with position = 0. Write another Get input function for the trapezoidal rule program. This one should use \texttt{MPI\_Pack} on process 0 and \texttt{MPI\_Unpack} on the other processes.
+
+\lstinputlisting[language=C, firstline=106, lastline=135]{sections/q3.20/code.c}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

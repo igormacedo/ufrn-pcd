@@ -9,9 +9,9 @@
 
 \begin{lstlisting}[language=C]
 int MPI_Type_contiguous(
-int           count         /* in */,
-MPI_Datatype  old_mpi_t     /* in */,
-MPI_Datatype* new_mpi_t_p   /* out */);
+    int           count         /* in */,
+    MPI_Datatype  old_mpi_t     /* in */,
+    MPI_Datatype* new_mpi_t_p   /* out */);
 \end{lstlisting}
 
 Modify the \texttt{Read\_vector} and \texttt{Print\_vector} functions so that they use an MPI datatype created by a call to \texttt{MPI\_Type\_contiguous} and a count
