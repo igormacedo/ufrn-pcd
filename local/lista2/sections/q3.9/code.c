@@ -340,7 +340,7 @@ void Parallel_vector_dotproduct(
    int local_i;
 
   for (local_i = 0; local_i < local_n; local_i++){
-      local_z[local_i] = local_x[local_i] + local_y[local_i];
+      local_z[local_i] = local_x[local_i] * local_y[local_i];
   }
 
   double local_total_z = 0.0;

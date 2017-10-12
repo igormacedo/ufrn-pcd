@@ -3,11 +3,23 @@
 
 %% Responsavel:
 
-\subsection{Questão 3.10}
+\subsection{Questão 3.12 *}
 
-In the \texttt{Read\_vector} function shown in Program 3.9, we use \texttt{local\_n} as the actual argument for two of the formal arguments to \texttt{MPI\_Scatter} : \texttt{send\_count} and \texttt{recv\_count}. Why is it OK to alias these arguments?\\
+An alternative to a butterfly-structured allreduce is a ring-pass structure. In a ring-pass, if there are p processes, each process q sends data to process q + 1, except that process p - 1 sends data to process 0. This is repeated until each process has the desired result. Thus, we can implement allreduce with the following code:
 
-É possível alinhar os dois argumentos porque \texttt{send\_count} deve ser o número de elementos, de acordo com \texttt{send\_type}, que serão enviados para cada processo. E, de forma semelhante, o \texttt{recv\_count} deve ser o número de elementos recebidos do procesos raíz, de acordo com \texttt{recv\_type}. Portanto, neste caso, ambos os argumentos devem receber o valor de \texttt{local\_n}.
+\begin{lstlisting}[language=C]
+sum = temp val = my val;
+  for (i = 1; i < p; i++) {
+    MPI_Sendrecv_replace(&temp_val, 1, MPI_INT, dest,
+    sendtag, source, recvtag, comm, &status);
+    sum += temp val;
+}
+\end{lstlisting}
+
+
+a. Write an MPI program that implements this algorithm for allreduce. How does its performance compare to the butterfly-structured allreduce?
+
+b. Modify the MPI program you wrote in the first part so that it implements prefix sums.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../../relatorio"
