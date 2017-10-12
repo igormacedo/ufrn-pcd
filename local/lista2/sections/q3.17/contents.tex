@@ -3,19 +3,23 @@
 
 %% Responsavel:
 
-\subsection{Questão 3.16}
+\subsection{Questão 3.17}
 
-Suppose \texttt{comm\_sz} = 8 and the vector x = (0, 1, 2, ... , 15) has been distributed among the processes using a block distribution. Draw a diagram illustrating the steps in a butterfly implementation of allgather of x. \\
+\texttt{MPI\_Type\_contiguous} can be used to build a derived datatype from a collection of contiguous elements in an array. Its syntax is
 
+\begin{lstlisting}[language=C]
+int MPI_Type_contiguous(
+int           count         /* in */,
+MPI_Datatype  old_mpi_t     /* in */,
+MPI_Datatype* new_mpi_t_p   /* out */);
+\end{lstlisting}
 
-\begin{figure}[h!]
-  \begin{center}
-    \includegraphics[width=450pt]{sections/q3.16/imgs/g1.png}
-  \end{center}
-  \caption{Allgather em comunicação butterfly}
-  \label{fig:scattertree}
-\end{figure}
+Modify the \texttt{Read\_vector} and \texttt{Print\_vector} functions so that they use an MPI datatype created by a call to \texttt{MPI\_Type\_contiguous} and a count
+argument of 1 in the calls to \texttt{MPI\_Scatter} and \texttt{MPI\_Gather}.\\
 
+\lstinputlisting[language=C, firstline=215, lastline=247]{sections/q3.17/code.c}
+
+\lstinputlisting[language=C, firstline=291, lastline=324]{sections/q3.17/code.c}
 
 %%% Local Variables:
 %%% mode: latex
