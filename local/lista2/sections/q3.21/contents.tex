@@ -3,55 +3,53 @@
 
 %% Responsavel:
 
-\subsection{Questão 3.20}
+\subsection{Questão 3.21}
 
-The functions \texttt{MPI\_Pack} and \texttt{MPI\_Unpack} provide an alternative to derived datatypes for grouping data. \texttt{MPI\_Pack} copies the data to be sent, one block at a time, into a user-provided buffer. The buffer can then be sent and received. After the data is received, \texttt{MPI\_Unpack} can be used to unpack it from the
-receive buffer. The syntax of \texttt{MPI\_Pack} is
+How does your system compare to ours? What run-times does your system get for matrix-vector multiplication? What kind of variability do you see in the times for a given value of \texttt{comm\_sz} and $n$? Do the results tend to cluster around the minimum, the mean, or the median?
 
-\begin{lstlisting}[language=C]
-      int MPI_Pack(
-            void*         in_buf        /* in     */,
-            int           in_buf_count  /* in     */,
-            MPI_Datatype  datatype      /* in     */,
-            void*        pack_buf       /* out    */,
-            int           pack_buf_sz   /* in     */,
-            int*          position_p    /* in/out */,
-            MPI_Comm      comm          /* in     */);
-\end{lstlisting}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|lllll|}
+    \hline
+     & \multicolumn{5}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192 & 16384 \\
+    \hline
+    1 & 3.7561 & 12.8853 & 52.0139 & 210.4686 & 846.9655 \\
+    2 & 2.0700 & 10.2071 & 41.1858 & 107.3081 & 438.0811 \\
+    4 & 1.7275 & 6.8219 & 25.0998 & 64.2229 & 245.5204 \\
+    8 & 1.7007 & 4.1896 & 14.3932 & 56.5015 & 219.8544 \\
+    16 & 2.1960 & 6.0016 & 20.8711 & 76.8699 & 236.1451 \\
+    \hline
+\end{tabular}
+\end{table}
 
-We could therefore pack the input data to the trapezoidal rule program with
-the following code:
-\begin{lstlisting}[language=C]
-    char pack_buf[100];
-    int position = 0;
+A medida que o comm\_sz aumenta, é possível ver que o tempo de execução diminui. Contudo, a execução nem sempre tem um comportamento constante. Isso pode ser observado na Figura \ref{fig:comp}.
 
-    MPI_Pack(&a, 1, MPI_DOUBLE, pack_buf, 100, &position, comm);
-    MPI_Pack(&b, 1, MPI_DOUBLE, pack_buf, 100, &position, comm);
-    MPI_Pack(&n, 1, MPI_INT, pack_buf, 100, &position, comm);
-\end{lstlisting}
+\begin{figure}[h!]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{sections/q3.21/imgs/fig1-1024.png}
+  \caption{\texttt{comm\_sz} = 1, Ordem = 1024, (s)}
+  \label{fig:sub1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{sections/q3.21/imgs/fig4-1024.png}
+  \caption{\texttt{comm\_sz} = 4, Ordem = 1024, (s)}
+  \label{fig:sub2}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{sections/q3.21/imgs/fig16-16384.png}
+  \caption{\texttt{comm\_sz} = 16, Ordem = 16384, (s)}
+  \label{fig:sub3}
+\end{subfigure}
+\caption{Comportamento dos tempos de execução}
+\label{fig:comp}
+\end{figure}
 
-The key is the position argument. When \texttt{MPI\_Pack} is called, position should
-refer to the first available slot in pack buf . When \texttt{MPI\_Pack} returns, it refers
-to the first available slot after the data that was just packed, so after process 0
-executes this code, all the processes can call\texttt{MPI\_Bcast} :
-\begin{lstlisting}[language=C]
-    MPI_Bcast(pack_buf, 100, MPI_PACKED, 0, comm);
-\end{lstlisting}
-
-Note that the MPI datatype for a packed buffer is \texttt{MPI\_PACKED}. Now the other processes can unpack the data using: \texttt{MPI\_Unpack} :
-\begin{lstlisting}[language=C]
-    int MPI_Unpack(
-          void*         pack_buf      /* in     */,
-          int           pack_buf_sz   /* in     */,
-          int*          position_p    /* in/out */,
-          void*         out_buf       /* out    */,
-          int           out_buf_count /* in     */,
-          MPI_Datatype  datatype      /* in     */,
-          MPI_Comm      comm          /* in     */);
-\end{lstlisting}
-This can be used by “reversing” the steps in \texttt{MPI\_Pack} , that is, the data is unpacked one block at a time starting with position = 0. Write another Get input function for the trapezoidal rule program. This one should use \texttt{MPI\_Pack} on process 0 and \texttt{MPI\_Unpack} on the other processes.
-
-\lstinputlisting[language=C, firstline=106, lastline=135]{sections/q3.20/code.c}
 
 %%% Local Variables:
 %%% mode: latex
