@@ -1,0 +1,26 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.14}
+
+a. Write a serial C program that defines a two-dimensional array in the main function. Just use numeric constants for the dimensions: \texttt{int two d[3][4];}\\
+ Initialize the array in the main function. After the array is initialized, call a function that attempts to print the array. The prototype for the function should look something like this. \\
+\texttt{void Print two d(int two d[][], int rows, int cols);}\\
+After writing the function try to compile the program. Can you explain
+why it won’t compile?
+
+b. After consulting a C reference (e.g., Kernighan and Ritchie [29]), modify the program so that it will compile and run, but so that it still uses a two-dimensional C array. \\
+
+O código abaixo não compila pois o compilador precisa saber as dimensões para fazer a aritmética de ponteiros corretamente. Isto é, se o compilador não tiver as dimensões do array quando ele é passado para uma função (e passado como ponteiro), a expressão array[x][y] não pode ser calculada, pois não há como sabe onde uma linha ou coluna começa ou termina.
+
+\lstinputlisting[language=C,firstline=1, lastline=23]{sections/q3.14/code.c}
+
+\lstinputlisting[language=C,firstline=24, lastline=45]{sections/q3.14/code.c}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
