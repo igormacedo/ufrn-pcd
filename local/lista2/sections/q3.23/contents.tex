@@ -1,0 +1,22 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.23}
+
+Although we don’t know the internals of the implementation of \texttt{MPI\_Reduce}, we might guess that it uses a structure similar to the binary tree we discussed. If this is the case, we would expect that its run-time would grow roughly at the rate of  $log_{2}(p)$, since there are roughly $log_{2}(p)$ levels in the tree. (Here, p = \texttt{comm\_sz}.) Since the run-time of the serial trapezoidal rule is roughly proportional to n, the number of trapezoids, and the parallel trapezoidal rule simply applies the serial rule to n/p trapezoids on each process, with our assumption about \texttt{MPI\_Reduce}, we get a formula for the overall run-time of the parallel trapezoidal rule that looks like
+\begin{equation*}
+T_{parallel}(n, p) \approx a \times \frac{n}{p} + b \cdot \mathrm{log}_{2}(p)
+\end{equation*}
+
+for some constants a and b.
+
+a. Use the formula, the times you’ve taken in Exercise 3.22, and your favorite R program for doing mathematical calculations (e.g., MATLAB ) to get a least-squares estimate of the values of a and b.
+
+b. Comment on the quality of the predicted run-times using the formula and the values for a and b computed in part (a).\\
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
