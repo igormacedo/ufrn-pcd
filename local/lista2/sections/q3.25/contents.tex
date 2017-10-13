@@ -1,0 +1,29 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.25}
+If \texttt{comm\_sz = p}, we mentioned that the “ideal” speedup is p. Is it possible to do better?
+
+a. Consider a parallel program that computes a vector sum. If we only time
+the vector sum - that is, we ignore input and output of the vectors - how
+might this program achieve speedup greater than p?
+
+b. A program that achieves speedup greater than p is said to have super-
+linear speedup. Our vector sum example only achieved superlinear
+speedup by overcoming certain “resource limitations.” What were these
+resource limitations? Is it possible for a program to obtain superlinear
+speedup without overcoming resource limitations?
+
+Uma forma de ter um speedup maior do que p é quando acontece superação de limitação de recursos. Ou seja se durante o aumento do problema ou do número de nós, acontece que uma limitação de hardware é superada.
+
+a. Neste caso, se os vetores não conseguem ser alocados (em linha ou coluna) na cache de um único processo, mas conseguem ser alocados (em linha ou coluna) quando existem vários processos, é possível que aconteça um speedup melhor que o linear. Nesse caso, o acesso aos dados na cache seria mais rápido que o acesso dos dados na memória principal, por isso haveria um ganho de velocidade.
+
+b. Nesse caso, acontece de que a limitação de cache foi superada, e o speedup super-linear foi possível.
+Um possível caso de speedup superlinear, sem superação de limitação de recursos, pode ser considerado quando a modelagem do problema e os dados necessariamente permitisse que ao paralelizar o algoritmo, o software consiga o super speedup. Por exemplo, em um pesquisa em estrutura de árvore, onde a paralelização permita que os dados sejam encontrados mais rápido.
+ 
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
