@@ -1,3 +1,14 @@
+/*
+Este software foi modificado para atividade da disciplina de Programacão
+Concorrente e Distribuida do curso de Engenharia de Computação da UFRN
+Aluno: Igor Macedo Silva
+
+* Compile:  mpicc -g -Wall -o mpi_trap3_mytree mpi_trap3_mytree.c -lm
+* Run:      mpiexec -n <number of processes> ./mpi_trap1_mytree
+
+Veja descrição original abaixo
+*/
+
 /* File:     mpi_trap3.c
  * Purpose:  Use MPI to implement a parallel version of the trapezoidal
  *           rule.  This version uses collective communications to
@@ -29,6 +40,8 @@
 /* We'll be using MPI routines, definitions, etc. */
 #include <mpi.h>
 
+#include <math.h>
+
 /* Get the input values */
 void Get_input(int my_rank, int comm_sz, double* a_p, double* b_p,
       int* n_p);
@@ -44,6 +57,7 @@ int main(void) {
    int my_rank, comm_sz, n, local_n;
    double a, b, h, local_a, local_b;
    double local_int, total_int;
+   double start, finish, loc_elapsed, elapsed;
 
    /* Let the system do what it needs to start up MPI */
    MPI_Init(NULL, NULL);
@@ -66,21 +80,47 @@ int main(void) {
    local_b = local_a + local_n*h;
    local_int = Trap(local_a, local_b, local_n, h);
 
+   MPI_Barrier(MPI_COMM_WORLD);
+   start = MPI_Wtime();
+
    /* Add up the integrals calculated by each process */
-   MPI_Reduce(&local_int, &total_int, 1, MPI_DOUBLE, MPI_SUM, 0,
-         MPI_COMM_WORLD);
+   int i;
+   double neighbor_int= 0.0;
+   for(i = 0; i < (int)log2(comm_sz); i++)
+   {
+         if (my_rank%((int)pow((double)2,(i+1))) == 0)
+         {
+             //printf("Process %d Receiving from %d \n", my_rank, my_rank+(int)pow(2,i));
+             MPI_Recv(&neighbor_int, 1, MPI_DOUBLE, my_rank+(int)pow(2,i), 0,
+             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+             local_int = local_int + neighbor_int;
+         }
+         else
+         {
+             //printf("Process %d sending to %d \n", my_rank, my_rank-(int)pow(2,i));
+             MPI_Send(&local_int,1,MPI_DOUBLE,my_rank-(int)pow(2,i),0,MPI_COMM_WORLD);
+             break;
+         }
+    }
 
-   /* Print the result */
-   if (my_rank == 0) {
-      printf("With n = %d trapezoids, our estimate\n", n);
-      printf("of the integral from %f to %f = %.15e\n",
-          a, b, total_int);
-   }
+    finish = MPI_Wtime();
+    loc_elapsed = finish-start;
+    MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0,
+          MPI_COMM_WORLD);
 
-   /* Shut down MPI */
-   MPI_Finalize();
+    /* Print the result */
+    if (my_rank == 0) {
+        total_int = local_int;
+        printf("With n = %d trapezoids, our estimate\n", n);
+        printf("of the integral from %f to %f = %.15e\n",
+         a, b, total_int);
+        printf("elapsed time (s): %e \n", elapsed);
+    }
 
-   return 0;
+    /* Shut down MPI */
+    MPI_Finalize();
+
+    return 0;
 } /*  main  */
 
 /*------------------------------------------------------------------

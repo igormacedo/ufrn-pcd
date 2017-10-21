@@ -44,6 +44,8 @@ int main(void) {
    int my_rank, comm_sz, n, local_n;
    double a, b, h, local_a, local_b;
    double local_int, total_int;
+   double start, finish, loc_elapsed, elapsed;
+
 
    /* Let the system do what it needs to start up MPI */
    MPI_Init(NULL, NULL);
@@ -66,8 +68,15 @@ int main(void) {
    local_b = local_a + local_n*h;
    local_int = Trap(local_a, local_b, local_n, h);
 
+   MPI_Barrier(MPI_COMM_WORLD);
+   start = MPI_Wtime();
    /* Add up the integrals calculated by each process */
    MPI_Reduce(&local_int, &total_int, 1, MPI_DOUBLE, MPI_SUM, 0,
+         MPI_COMM_WORLD);
+   finish = MPI_Wtime();
+
+   loc_elapsed = finish-start;
+   MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0,
          MPI_COMM_WORLD);
 
    /* Print the result */
@@ -75,6 +84,7 @@ int main(void) {
       printf("With n = %d trapezoids, our estimate\n", n);
       printf("of the integral from %f to %f = %.15e\n",
           a, b, total_int);
+      printf("elapsed time (s): %e \n", elapsed);
    }
 
    /* Shut down MPI */
