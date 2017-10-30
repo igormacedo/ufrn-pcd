@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#SBATCH --job-name=mpi_hello
+#SBATCH --time=0-0:10
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=32
+#SBATCH --cpus-per-task=1
+#SBATCH --qos=qos3
+
+time srun ./odd_even 100000 g
+
