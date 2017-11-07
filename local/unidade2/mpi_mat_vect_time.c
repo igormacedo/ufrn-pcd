@@ -56,7 +56,7 @@ int main(void) {
    int m, local_m, n, local_n;
    int my_rank, comm_sz;
    MPI_Comm comm;
-   //double start, finish, loc_elapsed, elapsed;
+   double start, finish, loc_elapsed, elapsed;
 
    MPI_Init(NULL, NULL);
    comm = MPI_COMM_WORLD;
@@ -69,30 +69,31 @@ int main(void) {
 //   Read_matrix("A", local_A, m, local_m, n, my_rank, comm);
    Generate_matrix("A", local_A, m, local_m, n, my_rank, comm);
 //#  ifdef DEBUG
-   Print_matrix("A", local_A, m, local_m, n, my_rank, comm);
+   //Print_matrix("A", local_A, m, local_m, n, my_rank, comm);
 //#  endif
 //   Read_vector("x", local_x, n, local_n, my_rank, comm);
    Generate_vector("x", local_x, n, local_n, my_rank, comm);
 //#  ifdef DEBUG
-   Print_vector("x", local_x, n, local_n, my_rank, comm);
+   //Print_vector("x", local_x, n, local_n, my_rank, comm);
 //#  endif
 
-// int i = 0;
-// for(i = 0; i < 100; i++){
-//     MPI_Barrier(comm);
-//     start = MPI_Wtime();
-   Mat_vect_mult(local_A, local_x, local_y, local_m, n, local_n, comm);
-   //finish = MPI_Wtime();
-   //loc_elapsed = finish-start;
-   //MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
+int i;
+for(i = 0; i < 40; i++){
+    start = 0.0; finish=0.0; loc_elapsed=0.0; elapsed = 0.0;
 
+    MPI_Barrier(MPI_COMM_WORLD);
+    start = MPI_Wtime();
+    Mat_vect_mult(local_A, local_x, local_y, local_m, n, local_n, comm);
+    finish = MPI_Wtime();
+    loc_elapsed = finish-start;
+    MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0, comm);
 //    #ifdef DEBUG
-   Print_vector("y", local_y, m, local_m, my_rank, comm);
+    //Print_vector("y", local_y, m, local_m, my_rank, comm);
 //    #endif
 
-//     if (my_rank == 0)
-//        printf("%e,", elapsed);
-// }
+    if (my_rank == 0)
+       printf("%e\n", elapsed);
+}
 
    free(local_A);
    free(local_x);
@@ -138,10 +139,11 @@ void Get_dims(
    if (my_rank == 0) {
       //printf("Enter the number of rows\n");
       //scanf("%d", m_p);
-      *m_p = 8;
+      int d = 2048;
+      *m_p = d;
       //printf("Enter the number of columns\n");
       //scanf("%d", n_p);
-      *n_p = 8;
+      *n_p = d;
       printf("Col: %d and Lin: %d\n", *m_p, *n_p);
    }
    MPI_Bcast(m_p, 1, MPI_INT, 0, comm);

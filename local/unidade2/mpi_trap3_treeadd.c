@@ -80,41 +80,47 @@ int main(void) {
    local_b = local_a + local_n*h;
    local_int = Trap(local_a, local_b, local_n, h);
 
-   MPI_Barrier(MPI_COMM_WORLD);
-   start = MPI_Wtime();
+   int d;
+   for(d = 0; d < 40; d++){
+       start = 0.0; finish=0.0; loc_elapsed=0.0; elapsed = 0.0;
+       MPI_Barrier(MPI_COMM_WORLD);
+       start = MPI_Wtime();
 
-   /* Add up the integrals calculated by each process */
-   int i;
-   double neighbor_int= 0.0;
-   for(i = 0; i < (int)log2(comm_sz); i++)
-   {
-         if (my_rank%((int)pow((double)2,(i+1))) == 0)
-         {
-             //printf("Process %d Receiving from %d \n", my_rank, my_rank+(int)pow(2,i));
-             MPI_Recv(&neighbor_int, 1, MPI_DOUBLE, my_rank+(int)pow(2,i), 0,
-             MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-             local_int = local_int + neighbor_int;
-         }
-         else
-         {
-             //printf("Process %d sending to %d \n", my_rank, my_rank-(int)pow(2,i));
-             MPI_Send(&local_int,1,MPI_DOUBLE,my_rank-(int)pow(2,i),0,MPI_COMM_WORLD);
-             break;
-         }
-    }
+       /* Add up the integrals calculated by each process */
+       int i;
+       double neighbor_int= 0.0;
+       for(i = 0; i < (int)log2(comm_sz); i++)
+       {
+             if (my_rank%((int)pow((double)2,(i+1))) == 0)
+             {
+                 //printf("Process %d Receiving from %d \n", my_rank, my_rank+(int)pow(2,i));
+                 MPI_Recv(&neighbor_int, 1, MPI_DOUBLE, my_rank+(int)pow(2,i), 0,
+                 MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                 local_int = local_int + neighbor_int;
+             }
+             else
+             {
+                 //printf("Process %d sending to %d \n", my_rank, my_rank-(int)pow(2,i));
+                 MPI_Send(&local_int,1,MPI_DOUBLE,my_rank-(int)pow(2,i),0,MPI_COMM_WORLD);
+                 break;
+             }
+        }
 
-    finish = MPI_Wtime();
-    loc_elapsed = finish-start;
-    MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0,
-          MPI_COMM_WORLD);
+        finish = MPI_Wtime();
+        loc_elapsed = finish-start;
 
-    /* Print the result */
-    if (my_rank == 0) {
-        total_int = local_int;
-        printf("With n = %d trapezoids, our estimate\n", n);
-        printf("of the integral from %f to %f = %.15e\n",
-         a, b, total_int);
-        printf("elapsed time (s): %e \n", elapsed);
+        MPI_Barrier(MPI_COMM_WORLD);
+        MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0,
+              MPI_COMM_WORLD);
+
+        /* Print the result */
+        if (my_rank == 0) {
+            total_int = local_int;
+            //printf("With n = %d trapezoids, our estimate\n", n);
+            //printf("of the integral from %f to %f = %.15e\n",
+             //a, b, total_int);
+            printf("elapsed time (s): %e \n", elapsed);
+        }
     }
 
     /* Shut down MPI */
@@ -138,7 +144,9 @@ void Get_input(int my_rank, int comm_sz, double* a_p, double* b_p,
 
    if (my_rank == 0) {
       printf("Enter a, b, and n\n");
-      scanf("%lf %lf %d", a_p, b_p, n_p);
+      //scanf("%lf %lf %d", a_p, b_p, n_p);
+      *a_p = 10.0; *b_p = 100.0; *n_p = 16777216;
+      printf("%lf %lf %d\n", *a_p, *b_p, *n_p);
    }
    MPI_Bcast(a_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
    MPI_Bcast(b_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
