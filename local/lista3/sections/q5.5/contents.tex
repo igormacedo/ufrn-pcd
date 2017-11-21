@@ -1,0 +1,42 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.5}
+
+Suppose that on the amazing Bleeblon computer, variables with type float can store three decimal digits. Also suppose that the Bleeblon’s floating point registers can store four decimal digits, and that after any floating point operation, the result is rounded to three decimal digits before being stored. Now
+suppose a C program declares an array a as follows:
+\begin{lstlisting}[language=C]
+float a [] = {4.0, 3.0, 3.0, 1000.0};
+\end{lstlisting}
+
+a. What is the output of the following block of code if it’s run on the Bleeblon?
+\begin{lstlisting}[language=C]
+int i ;
+float sum = 0.0;
+for ( i = 0; i < 4; i ++)
+    sum += a [ i ];
+printf ("sum = \%4.1f\\n", sum );
+\end{lstlisting}
+
+
+b. Now consider the following code:
+
+\begin{lstlisting}[language=C]
+int i ;
+float sum = 0.0;
+# pragma omp parallel for num threads (2) \
+  reduction (+: sum )
+for ( i = 0; i < 4; i ++)
+    sum += a [ i ];
+printf ("sum = \%4.1f\\n", sum );
+\end{lstlisting}
+
+Suppose that the run-time system assigns iterations i = 0, 1 to thread 0 and i = 2, 3 to thread 1. What is the output of this code on the Bleeblon?
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

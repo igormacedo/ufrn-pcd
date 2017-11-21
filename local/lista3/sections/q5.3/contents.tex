@@ -1,0 +1,40 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.3}
+
+Modify \texttt{omp\_trap\_1.c} so that \\
+a. it uses the first block of code on page 222, and\\
+b. the time used by the \texttt{parallel} block is timed using the OpenMP function \texttt{omp\_get\_wtime()}. The syntax is \\
+\texttt{double omp\_get\_wtime(void)}\\
+It returns the number of seconds that have passed since some time in
+the past. For details on taking timings, see Section 2.6.4. Also recall that OpenMP has a barrier directive: \\
+\texttt{\# pragma omp barrier}\\
+Now find a system with at least two cores and time the program with \\
+c. one thread and a large value of n, and\\
+d. two threads and the same value of n.
+What happens? Download \texttt{omp\_trap\_2.c} from the book’s website. How does its performance compare? Explain your answers. \\
+
+Para \texttt{omp\_trap\_1.c} \\
+Para 1 thread, t = 15.747014 s\\
+Para 2 threads, t = 15.724514 s\\
+Para 64 threads, t = 15.990875 s\\
+para 1024 threas, t = 16.322817 s\\
+
+Percebemos que quando aumentamos o número de threads, o tempo cresce. Isso pode indicar que o próprio overhead de criação e troca de threads já é responsável pelo aumento desse tempo. \\
+
+Para \texttt{omp\_trap\_2.c}: \\
+Para 1 thread, t = 15.603254 s\\
+Para 2 threads, t = 7.978304 s\\
+Para 8 threads, t = 2.354562 s\\
+para 64 threas, t = 2.422850 s\\
+
+O resultado é melhor, pois o cálculo é feito todo de forma paralela e apenas a soma dos resultados parciais acontece em uma região crítica. E vemos a redução do tempo, conforme o esperado.
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

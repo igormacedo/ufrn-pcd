@@ -1,0 +1,229 @@
+% !TEX encoding = UTF-8 Unicode
+\documentclass[paper=a4, fontsize=11pt, oneside]{scrartcl}
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\usepackage[brazil]{babel}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage{minted}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{ulem}
+\usepackage{afterpage}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{authblk}
+\usepackage{datetime}
+\usepackage{enumerate}
+\usepackage{ifthen}
+\usepackage{pdflscape}
+\usepackage[absolute]{textpos}
+\usepackage{times}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{booktabs}
+ \usepackage{booktabs}
+ \usepackage[table,xcdraw]{xcolor}
+ %\documentclass[xcolor=table]{beamer}
+\usepackage[top=3cm, bottom=2cm, left=3cm, right=2cm]{geometry}
+\usepackage[portuguese, ruled, linesnumbered]{algorithm2e}
+\usepackage{graphicx}
+\usepackage{tabu}
+\usepackage{subcaption}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\DeclareUnicodeCharacter{00A0}{~}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={break, case, catch, continue, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, new, return, switch, this, throw, try, typeof, var, void, while, with},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  sensitive=true
+}
+
+
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\Large\bfseries}
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cfttoctitlefont}{\LARGE\bfseries}
+\renewcommand{\cftloftitlefont}{\LARGE\bfseries}
+\renewcommand{\cftlottitlefont}{\LARGE\bfseries}
+\renewcommand{\cftdot}{.}
+
+\renewcommand{\contentsname}{Conteúdo}
+
+\usepackage{titlesec}
+\titleformat*{\section}{\Large\bfseries}
+\titleformat*{\subsection}{\large\bfseries}
+
+\usepackage{natbib}
+\setlength{\bibsep}{5pt}
+
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead[L]{}
+\fancyhead[C]{}
+\fancyhead[R]{\footnotesize\thepage}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{empty}{
+\fancyhf{}
+\fancyhead{}
+\fancyfoot[L]{}
+\fancyfoot[C]{}
+\fancyfoot[R]{}
+}
+\fancypagestyle{lscape}{
+\fancyhf{}
+\fancyhead[L]{}
+\fancyhead[C]{}
+\fancyhead[R]{
+\begin{textblock}{1}(0.75,2){\rotatebox{90}{\footnotesize \thepage}}
+\end{textblock}
+}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+}
+
+\linespread{1.15}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\providecommand{\printwp}{}
+\newcommand{\wpname}[1]
+{
+   \renewcommand{\printwp}{
+      \ifthenelse{\equal{#1}{WP2}}{WP2 -- Aplicações}{}
+      \ifthenelse{\equal{#1}{WP3}}{WP3 -- Sensoriamento}{}
+      \ifthenelse{\equal{#1}{WP4}}{WP4 -- Infraestrutura}{}
+      \ifthenelse{\equal{#1}{WP5}}{WP5 -- Middleware}{}
+      \ifthenelse{\equal{#1}{WP6}}{WP6 -- Análise e Visualização de Dados}{}
+   }
+}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{language=Matlab,%
+    %basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mymauve},
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,%without this there will be a symbol in the places where there is a space
+    numbers=left,%
+    numberstyle={\tiny \color{black}},% size of the numbers
+    numbersep=9pt, % this defines how far the numbers are from the text
+    emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+    %emph=[2]{word1,word2}, emphstyle=[2]{style},
+}
+
+\usepackage{xcolor}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{white},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
+\input{cover/cover}
+\newpage
+
+% Introduction
+\section{Descrição}
+
+Lista da 3a unidade
+Descrição:
+Apresentar as respostas a todas as questões de exercício do capítulo 5 do livro texto, com exceção às questões: 5.1, 5.4, 5.7 e 5.11.
+
+Instruções para resolução (LEIAM!):
+\begin{itemize}
+  \item Procure responder corretamente todas as questões da lista;
+  \item Suas respostas serão validadas de forma oral por amostragem - geralmente de 2 à 3 defesas orais;
+  \item Se não conseguir responder alguma questão, procure esclarecer as dúvidas em tempo em sala de aula com o professor, pelo SIGAA, com um colega, ou por e-mail. Se necessário, é possível marcar um horário para tirar dúvidas na sala do professor;
+  \item Não serão aceitas respostas "mágicas", ou seja, quando a resposta está na lista entregue mas você não sabe explicar como chegou a ela. Sua nota nesse caso será 0 (zero). Mesmo que não saiba explicar apenas parte da sua resposta;
+  \item Procure entregar a resolução da lista de forma organizada. Isso pode favorecer a sua nota;
+  \item Os códigos dos programas requisitados (ou as partes relevantes) deverão aparecer no corpo da resolução da questão;
+  \item A resolução da lista deverá ser entregue em formato PDF em apenas 1 (um) arquivo;
+  \item O envio da resolução pode ser feito inúmeras vezes. Utilize-se disso para manter sempre uma versão atualizada das suas respostas e evite problemas com o envio próximo ao prazo de submissão devido a instabilidades no SIGAA;
+  \item A lista com o número das questões respondidas deve aparecer na primeira folha da lista. Não será aceita alteração nessa lista.
+  \item Procure preparar sua defesa oral para cada questão. Explicações diretas e sem arrodeios favorecerão a sua nota;
+  \item A defesa deverá ser agendada com antecedência. Para isso, indique por email (samuel@dca.ufrn.br) no mínimo 3 horários dentro dos intervalos disponíveis em pelo menos 3 turnos diferentes. Caso não tenha disponibilidade em 3 turnos diferentes, deverá apresentar uma justificativa.
+  \item Os horários disponíveis serão disponibilizados em uma notícia na turma virtual e serão atualizados a medida que os agendamentos forem sendo fixados.
+  \item A defesa oral leva apenas de 10 a 15 minutos em horários fixados com antecedência. Não será tolerado que o aluno chegue atrasado para a sua prova.
+
+\end{itemize}
+
+Período:
+Inicia em 09/11/2017 às 00h00 e finaliza em 24/11/2017 às 23h59
+
+\newpage
+
+\section{Questões}
+\label{sec:andamento}
+
+%\input{sections/q5.1/contents} % não faz
+\input{sections/q5.2/contents}
+\input{sections/q5.3/contents}
+%\input{sections/q5.4/contents} % não faz
+\input{sections/q5.5/contents}
+%\input{sections/q5.6/contents}
+%\input{sections/q5.7/contents} % não faz
+%\input{sections/q5.8/contents}
+%\input{sections/q5.9/contents}
+%\input{sections/q5.10/contents}
+%\input{sections/q5.11/contents} % não faz
+%\input{sections/q5.12/contents}
+%\input{sections/q5.13/contents}
+%\input{sections/q5.14/contents}
+%\input{sections/q5.15/contents}
+%\input{sections/q5.16/contents}
+
+
+\newpage
+
+\bibliographystyle{abbrv}
+\bibliography{
+	sections/modelo/ref.bib
+	}
+\end{document}
