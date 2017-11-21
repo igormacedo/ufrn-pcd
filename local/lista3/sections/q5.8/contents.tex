@@ -1,0 +1,21 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.8}
+
+Consider the loop:
+\begin{lstlisting}[language=C]
+a[0] = 0;
+for(i = 1; i < n; i++)
+  a[i] = a[i - 1] + i ;
+\end{lstlisting}
+
+There’s clearly a loop-carried dependence, as the value of a[i] can’t be computed without the value of a[i - 1]. Can you see a way to eliminate this dependence and parallelize the loop?
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

@@ -15,7 +15,7 @@ a. What is the output of the following block of code if it’s run on the Bleebl
 int i ;
 float sum = 0.0;
 for ( i = 0; i < 4; i ++)
-    sum += a [ i ];
+    sum += a[i];
 printf ("sum = \%4.1f\\n", sum );
 \end{lstlisting}
 
@@ -28,12 +28,42 @@ float sum = 0.0;
 # pragma omp parallel for num threads (2) \
   reduction (+: sum )
 for ( i = 0; i < 4; i ++)
-    sum += a [ i ];
+    sum += a[i];
 printf ("sum = \%4.1f\\n", sum );
 \end{lstlisting}
 
 Suppose that the run-time system assigns iterations i = 0, 1 to thread 0 and i = 2, 3 to thread 1. What is the output of this code on the Bleeblon?
 
+a) memory -> registers -> sum register\\
+a[0] = 4.00e0 -> 4.000e0 -> sum = 4.000e0\\
+a[1] = 3.00e0 -> 3.000e0 -> sum = 7.000e0\\
+a[2] = 3.00e0 -> 3.000e0 -> sum = 1.000e1\\
+a[3] = 1.00e3 -> 1.000e3 -> sum = 1.010e3\\
+
+Print \\
+sum = 1010.0\\
+
+Todas as operações com sum são feitas no próprio registrador\\
+
+b)
+thread 0\\
+a[0] = 4.00e0 -> 4.000e0 -> sum = 4.000e0\\
+a[1] = 3.00e0 -> 3.000e0 -> sum = 7.000e0\\
+sum = 7.00e0\\
+
+thread 1\\
+a[2] = 3.00e0 -> 3.000e0 -> sum = 3.000e0\\
+a[3] = 1.00e3 -> 1.000e3 -> sum = 1.003e3\\
+sum = 1.00e3\\
+
+Sum precisa voltar para a memória para a operação de redução\\
+
+sum\_0 = 7.00e0 -> 7.000e0 -> sum\_total = 7.000e0\\
+sum\_1 = 1.00e3 -> 1.000e3 -> sum\_total = 1.007e3\\
+sum = 1.01e3\\
+
+Print \\
+sum = 1010.0\\
 
 
 %%% Local Variables:
