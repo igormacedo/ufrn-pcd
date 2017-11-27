@@ -68,23 +68,29 @@ int main(void) {
    local_b = local_a + local_n*h;
    local_int = Trap(local_a, local_b, local_n, h);
 
-   MPI_Barrier(MPI_COMM_WORLD);
-   start = MPI_Wtime();
-   /* Add up the integrals calculated by each process */
-   MPI_Reduce(&local_int, &total_int, 1, MPI_DOUBLE, MPI_SUM, 0,
-         MPI_COMM_WORLD);
-   finish = MPI_Wtime();
+   int i;
+   for(i = 0; i < 40; i++){
+       start = 0.0; finish=0.0; loc_elapsed=0.0; elapsed = 0.0;
 
-   loc_elapsed = finish-start;
-   MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0,
-         MPI_COMM_WORLD);
+       MPI_Barrier(MPI_COMM_WORLD);
+       start = MPI_Wtime();
+       /* Add up the integrals calculated by each process */
+       MPI_Reduce(&local_int, &total_int, 1, MPI_DOUBLE, MPI_SUM, 0,
+             MPI_COMM_WORLD);
+       finish = MPI_Wtime();
 
-   /* Print the result */
-   if (my_rank == 0) {
-      printf("With n = %d trapezoids, our estimate\n", n);
-      printf("of the integral from %f to %f = %.15e\n",
-          a, b, total_int);
-      printf("elapsed time (s): %e \n", elapsed);
+       MPI_Barrier(MPI_COMM_WORLD);
+       loc_elapsed = finish-start;
+       MPI_Reduce(&loc_elapsed, &elapsed, 1, MPI_DOUBLE, MPI_MAX, 0,
+             MPI_COMM_WORLD);
+
+       /* Print the result */
+       if (my_rank == 0) {
+          //printf("With n = %d trapezoids, our estimate\n", n);
+          //printf("of the integral from %f to %f = %.15e\n",
+              //a, b, total_int);
+          printf("elapsed time (s): %e \n", elapsed);
+       }
    }
 
    /* Shut down MPI */
@@ -108,7 +114,9 @@ void Get_input(int my_rank, int comm_sz, double* a_p, double* b_p,
 
    if (my_rank == 0) {
       printf("Enter a, b, and n\n");
-      scanf("%lf %lf %d", a_p, b_p, n_p);
+      //scanf("%lf %lf %d", a_p, b_p, n_p);
+      *a_p = 10.0; *b_p = 100.0; *n_p = 16777216;
+      printf("%lf %lf %d\n", *a_p, *b_p, *n_p);
    }
    MPI_Bcast(a_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
    MPI_Bcast(b_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);

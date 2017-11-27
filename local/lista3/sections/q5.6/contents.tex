@@ -1,0 +1,21 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.6}
+
+Write an OpenMP program that determines the default scheduling of parallel for loops. Its input should be the number of iterations, and its output should be which iterations of a parallelized for loop are executed by which thread. For example, if there are two threads and four iterations, the output might be:
+
+\begin{lstlisting}[language=C]
+Thread 0: Iterations 0 -- 1
+Thread 1: Iterations 2 -- 3
+\end{lstlisting}
+
+\lstinputlisting[language=C]{sections/q5.6/code/omp_scheduling.c}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
