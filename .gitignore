@@ -1,5 +1,6 @@
 *~
 */bin
+\._*
 
 // latex files
 *.aux
@@ -7,7 +8,6 @@
 *.log
 *.lot
 *.out
-*.pdf
 *.synctex.gz
 *.toc
 .DS_Store

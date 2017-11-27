@@ -1,0 +1,27 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.17}
+
+\texttt{MPI\_Type\_contiguous} can be used to build a derived datatype from a collection of contiguous elements in an array. Its syntax is
+
+\begin{lstlisting}[language=C]
+int MPI_Type_contiguous(
+    int           count         /* in */,
+    MPI_Datatype  old_mpi_t     /* in */,
+    MPI_Datatype* new_mpi_t_p   /* out */);
+\end{lstlisting}
+
+Modify the \texttt{Read\_vector} and \texttt{Print\_vector} functions so that they use an MPI datatype created by a call to \texttt{MPI\_Type\_contiguous} and a count
+argument of 1 in the calls to \texttt{MPI\_Scatter} and \texttt{MPI\_Gather}.\\
+
+\lstinputlisting[language=C, firstline=215, lastline=247]{sections/q3.17/code.c}
+
+\lstinputlisting[language=C, firstline=291, lastline=324]{sections/q3.17/code.c}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

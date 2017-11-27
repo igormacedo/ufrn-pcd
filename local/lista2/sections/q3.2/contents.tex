@@ -1,0 +1,19 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.2}
+
+Modify the trapezoidal rule so that it will correctly estimate the integral even if \texttt{comm\_sz} doesn’t evenly divide n. (You can still assume that n $\geq$ \texttt{comm\_sz}.)\\
+
+Se \texttt{comm\_sz} não divide perfeitamente n, devemos alocar os trapézios restantes nos processos de maneira mais deliberada. o pseudocódigo poderia ser:
+
+\lstinputlisting[language=C, firstline=1, lastline=12]{sections/q3.2/code.c}
+
+O trecho da linha 7 se refere ao acrescimo incremental que deve acontecer ao h para cada rank. Isto é, no caso de \texttt{n\_mod\_comm = 3}, o primeiro \texttt{local\_a} deve receber um acrescimo de 0, o segundo, de 1, o terceiro, de 3 e assim sucessivamente. Isso acontece pois é uma compensação ao \texttt{local\_b} que está sendo acrescido de 1 até o momento em que todos os trapézios extras (no caso de n não exatamente divisivel por \texttt{comm\_sz}) forem alocados em algum processo. E isso vai acontecer somente quando \texttt{my\_rank $\geq$ n\_mod\_comm}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

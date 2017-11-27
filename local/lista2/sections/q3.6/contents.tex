@@ -1,0 +1,38 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.6}
+
+Suppose comm\_sz = 4 and suppose that x is a vector with n = 14 components.
+
+a. How would the components of x be distributed among the processes in a program that used a block distribution?
+
+b. How would the components of x be distributed among the processes in a program that used a cyclic distribution?
+
+c. How would the components of x be distributed among the processes in a program that used a block-cyclic distribution with blocksize b = 2?
+
+You should try to make your distributions general so that they could be used regardless of what comm sz and n are. You should also try to make your distributions “fair” so that if q and r are any two processes, the difference between the number of components assigned to q and the number of components assigned to r is as small as possible.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{||c c c c||}
+ \hline
+ Processos & Bloco & Cíclico & Bloco-Cíclico \\
+ & & &  (tamanho do bloco = 2)\\ [0.5ex]
+ \hline\hline
+ 0 & 0, 1, 2, 3 & 0, 4, 8, 12 & 0 1, 8 9 \\
+ 1 & 4, 5, 6, 7 & 1, 5, 9, 13 & 2 3, 10 11\\
+ 2 & 8, 9, 10, & 2, 6, 10, & 4 5, 12 13 \\
+ 3 & 11, 12, 13, & 3, 7, 11, & 6 7 \\
+ \hline
+\end{tabular}
+\caption{Distribuição dos elementos do vetor}
+\label{table:1}
+\end{table}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

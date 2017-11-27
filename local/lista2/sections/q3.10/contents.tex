@@ -1,0 +1,14 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.10}
+
+In the \texttt{Read\_vector} function shown in Program 3.9, we use \texttt{local\_n} as the actual argument for two of the formal arguments to \texttt{MPI\_Scatter} : \texttt{send\_count} and \texttt{recv\_count}. Why is it OK to alias these arguments?\\
+
+É possível alinhar os dois argumentos porque \texttt{send\_count} deve ser o número de elementos, de acordo com \texttt{send\_type}, que serão enviados para cada processo. E, de forma semelhante, o \texttt{recv\_count} deve ser o número de elementos recebidos do procesos raíz, de acordo com \texttt{recv\_type}. Portanto, neste caso, ambos os argumentos devem receber o valor de \texttt{local\_n}.
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

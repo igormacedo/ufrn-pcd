@@ -1,0 +1,15 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.13}
+
+\texttt{MPI\_Scatter} and \texttt{MPI\_Gather} have the limitation that each process must send or receive the same number of data items. When this is not the case, we must use the MPI functions \texttt{MPI\_Gatherv} and \texttt{MPI\_Scatterv}. Look at the man pages for these functions, and modify your vector sum, dot product program so that it can correctly handle the case when n isn’t evenly divisible by \texttt{comm\_sz}.
+
+\lstinputlisting[language=C]{sections/q3.13/code.c}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

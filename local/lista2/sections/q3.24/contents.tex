@@ -1,0 +1,14 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.24}
+Take a look at Programming Assignment 3.7. The code that we outlined for timing the cost of sending messages should work even if the count argument is zero. What happens on your system when the count argument is 0? Can you explain why you get a nonzero elapsed time when you send a zero-byte message?\\
+
+Quando a mensagem é enviada com count = 0, o procedimento do sistema é o mesmo, porém 0 bytes são enviados. O tempo que o sistema leva para enviar 0 bytes é geralmente tido como a definição da latência do sistema, que envolve toda a preparação que o software precisa fazer para enviar a mensagem, assim como o hardware também. Nesse caso, a mensagem, apesar de ter 0 bytes, possui informações outras como a tag e o comunicator, que levam algum tempo para serem enviadas.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

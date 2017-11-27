@@ -1,6 +1,6 @@
 /* File:     mpi_trap3.c
- * Purpose:  Use MPI to implement a parallel version of the trapezoidal 
- *           rule.  This version uses collective communications to 
+ * Purpose:  Use MPI to implement a parallel version of the trapezoidal
+ *           rule.  This version uses collective communications to
  *           distribute the input data and compute the global sum.
  *
  * Input:    The endpoints of the interval of integration and the number
@@ -34,14 +34,14 @@ void Get_input(int my_rank, int comm_sz, double* a_p, double* b_p,
       int* n_p);
 
 /* Calculate local integral  */
-double Trap(double left_endpt, double right_endpt, int trap_count, 
-   double base_len);    
+double Trap(double left_endpt, double right_endpt, int trap_count,
+   double base_len);
 
 /* Function we're integrating */
-double f(double x); 
+double f(double x);
 
 int main(void) {
-   int my_rank, comm_sz, n, local_n;   
+   int my_rank, comm_sz, n, local_n;
    double a, b, h, local_a, local_b;
    double local_int, total_int;
 
@@ -89,8 +89,8 @@ int main(void) {
  *               and the number of trapezoids
  * Input args:   my_rank:  process rank in MPI_COMM_WORLD
  *               comm_sz:  number of processes in MPI_COMM_WORLD
- * Output args:  a_p:  pointer to left endpoint               
- *               b_p:  pointer to right endpoint               
+ * Output args:  a_p:  pointer to left endpoint
+ *               b_p:  pointer to right endpoint
  *               n_p:  pointer to number of trapezoids
  */
 void Get_input(int my_rank, int comm_sz, double* a_p, double* b_p,
@@ -99,7 +99,7 @@ void Get_input(int my_rank, int comm_sz, double* a_p, double* b_p,
    if (my_rank == 0) {
       printf("Enter a, b, and n\n");
       scanf("%lf %lf %d", a_p, b_p, n_p);
-   } 
+   }
    MPI_Bcast(a_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
    MPI_Bcast(b_p, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
    MPI_Bcast(n_p, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -107,22 +107,22 @@ void Get_input(int my_rank, int comm_sz, double* a_p, double* b_p,
 
 /*------------------------------------------------------------------
  * Function:     Trap
- * Purpose:      Serial function for estimating a definite integral 
+ * Purpose:      Serial function for estimating a definite integral
  *               using the trapezoidal rule
  * Input args:   left_endpt
  *               right_endpt
- *               trap_count 
+ *               trap_count
  *               base_len
  * Return val:   Trapezoidal rule estimate of integral from
  *               left_endpt to right_endpt using trap_count
  *               trapezoids
  */
 double Trap(
-      double left_endpt  /* in */, 
-      double right_endpt /* in */, 
-      int    trap_count  /* in */, 
+      double left_endpt  /* in */,
+      double right_endpt /* in */,
+      int    trap_count  /* in */,
       double base_len    /* in */) {
-   double estimate, x; 
+   double estimate, x;
    int i;
 
    estimate = (f(left_endpt) + f(right_endpt))/2.0;

@@ -1,0 +1,26 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.12 *}
+
+An alternative to a butterfly-structured allreduce is a ring-pass structure. In a ring-pass, if there are p processes, each process q sends data to process q + 1, except that process p - 1 sends data to process 0. This is repeated until each process has the desired result. Thus, we can implement allreduce with the following code:
+
+\begin{lstlisting}[language=C]
+sum = temp val = my val;
+  for (i = 1; i < p; i++) {
+    MPI_Sendrecv_replace(&temp_val, 1, MPI_INT, dest,
+    sendtag, source, recvtag, comm, &status);
+    sum += temp val;
+}
+\end{lstlisting}
+
+
+a. Write an MPI program that implements this algorithm for allreduce. How does its performance compare to the butterfly-structured allreduce?
+
+b. Modify the MPI program you wrote in the first part so that it implements prefix sums.
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

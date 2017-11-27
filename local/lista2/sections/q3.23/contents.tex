@@ -1,0 +1,89 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.23}
+
+Although we don’t know the internals of the implementation of \texttt{MPI\_Reduce}, we might guess that it uses a structure similar to the binary tree we discussed. If this is the case, we would expect that its run-time would grow roughly at the rate of  $log_{2}(p)$, since there are roughly $log_{2}(p)$ levels in the tree. (Here, p = \texttt{comm\_sz}.) Since the run-time of the serial trapezoidal rule is roughly proportional to n, the number of trapezoids, and the parallel trapezoidal rule simply applies the serial rule to n/p trapezoids on each process, with our assumption about \texttt{MPI\_Reduce}, we get a formula for the overall run-time of the parallel trapezoidal rule that looks like
+\begin{equation*}
+T_{parallel}(n, p) \approx a \times \frac{n}{p} + b \cdot \mathrm{log}_{2}(p)
+\end{equation*}
+
+for some constants a and b.
+
+a. Use the formula, the times you’ve taken in Exercise 3.22, and your favorite R program for doing mathematical calculations (e.g., MATLAB ) to get a least-squares estimate of the values of a and b.
+
+b. Comment on the quality of the predicted run-times using the formula and the values for a and b computed in part (a).\\
+
+a. Script utilizado para fazer o fit
+\lstinputlisting[language=Python]{sections/q3.23/working.py}
+\textbf{Output}
+\begin{lstlisting}[language=C]
+[[Model]]
+    Model(t_parallel)
+[[Fit Statistics]]
+    # function evals   = 11
+    # data points      = 16
+    # variables        = 2
+    chi-square         = 0.000
+    reduced chi-square = 0.000
+    Akaike info crit   = -373.692
+    Bayesian info crit = -372.147
+[[Variables]]
+    a:   1.5364e-08 +/- 7.61e-10 (4.96%) (init= 1)
+    b:   6.5503e-06 +/- 1.11e-06 (16.90%) (init= 1)
+[[Correlations]] (unreported correlations are <  0.100)
+    C(a, b)                      = -0.259
+
+>>> print fit.values
+{'a': 1.5364234860843803e-08, 'b': 6.5502917499154895e-06}
+\end{lstlisting}
+
+b. Com a predição
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|llll|}
+    \hline
+     & \multicolumn{4}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192  \\
+    \hline
+    1 & 1.58214537e-05 & 3.064394e-05 & 6.87956822e-05 &  0.000125017164 \\
+    2 & 1.09386417e-05 & 1.88255289e-05 & 5.77306725e-05 & 6.33239711e-05 \\
+    4 & 2.1030905e-05 & 2.27093698e-05 & 2.16841662e-05 & 3.60274319e-05 \\
+    8 & 1.62243825e-05 & 3.75008588e-05 & 2.96688098e-05 & 2.9134753e-05 \\
+    \hline
+\end{tabular}
+\caption{Tempo de execução Real (s) (média)}
+\label{tab:timereal}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|llll|}
+    \hline
+     & \multicolumn{4}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192  \\
+    \hline
+    1 & 1.5732e-05 & 3.1465e-05 & 6.2931e-05 & 12.5863e-05 \\
+    2 & 1.4416e-05 & 2.2283e-05 & 3.8016e-05 & 6.9482e-05 \\
+    4 & 1.7033e-05 & 2.0967e-05 & 2.8833e-05 & 4.4566e-05 \\
+    8 & 2.1617e-05 & 2.3584e-05 & 2.7517e-05 & 3.5383e-05 \\
+    \hline
+\end{tabular}
+\caption{Tempo de execução Predito (s) (média)}
+\label{tab:timefake}
+\end{table}
+
+ Com os dados das Tabelas \ref{tab:timereal} e \ref{tab:timefake} vemos que a predição consegue razoavelmente seguir os valores da curva real. Isto acontece especialmente quando p = 1 e p = 2. A medida que p aumenta a predição fica mais precária. Porém a predição também melhora a medida que n aumenta.
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

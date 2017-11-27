@@ -1,0 +1,111 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+
+\subsection{Questão 3.22}
+
+Time our implementation of the trapezoidal rule that uses \texttt{MPI\_Reduce}. How will you choose n, the number of trapezoids? How do the minimum times compare to the mean and median times? What are the speedups? What are the efficiencies? On the basis of the data you collected, would you say that the trapezoidal rule is scalable?\\
+
+Recall that programs that can maintain a constant efficiency without increasing the problem size are sometimes said to be strongly scalable. Programs that can maintain a constant efficiency if the problem size increases at the same rate as
+the number of processes are sometimes said to be weakly scalable. \\
+
+A escolha do n é feita de forma que o algoritmo tome tempo de execução suficiente para uma medição segura e que ele possa ser dobrado a cada rodada. Em 100 rodadas de cada configuração, montamos as tabelas abaixo.
+
+Em análise da Tabela \ref{tab:timeq22efic} vemos que o algoritmo tem um momento de escalabilidade fraca entre  p = 2 e p = 4, mas volta a cair em p = 8. Provavelmente, o overhead de comunicação ainda é bem alto para esses p's, mas deve ser superado em p's maiores.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|llll|}
+    \hline
+     & \multicolumn{4}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192  \\
+    \hline
+    1 & 1.58214537e-05 & 3.064394e-05 & 6.87956822e-05 &  0.000125017164 \\
+    2 & 1.09386417e-05 & 1.88255289e-05 & 5.77306725e-05 & 6.33239711e-05 \\
+    4 & 2.1030905e-05 & 2.27093698e-05 & 2.16841662e-05 & 3.60274319e-05 \\
+    8 & 1.62243825e-05 & 3.75008588e-05 & 2.96688098e-05 & 2.9134753e-05 \\
+    \hline
+\end{tabular}
+\caption{Tempo de execução (s) (média)}
+\label{tab:timeq22a}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|llll|}
+    \hline
+     & \multicolumn{4}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192  \\
+    \hline
+    1 & 1.597404e-05 & 3.004074e-05 & 6.890297e-05 & 0.0001249313 \\
+    2 & 1.096725e-05 & 2.002716e-05 & 5.793571e-05 & 6.29425e-05 \\
+    4 & 1.907349e-05 & 2.217293e-05 & 2.098083e-05 & 3.504753e-05 \\
+    8 & 1.597404e-05 & 2.908707e-05 & 2.598763e-05 & 2.598763e-05 \\
+    \hline
+\end{tabular}
+\caption{Tempo de execução (mediana)}
+\label{tab:timeq22c}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|llll|}
+    \hline
+     & \multicolumn{4}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192  \\
+    \hline
+    1 & 1.478195e-05 & 2.884865e-05 & 5.984306e-05 & 0.0001239777 \\
+    2 & 1.001358e-05 & 1.478195e-05 & 5.698204e-05 & 6.198883e-05 \\
+    4 & 1.788139e-05 & 2.193451e-05 & 2.098083e-05 & 3.385544e-05 \\
+    8 & 1.28746e-05 & 2.69413e-05 & 2.31266e-05 & 2.479553e-05 \\
+    \hline
+\end{tabular}
+\caption{Tempo de execução (s) (mínimo)}
+\label{tab:timeq22b}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|llll|}
+    \hline
+     & \multicolumn{4}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192  \\
+    \hline
+    1 & 1.0 & 1.0 & 1.0 & 1.0 \\
+    2 & 1.44638193058  & 1.62778640445 & 1.191666045465 & 1.97424706361 \\
+    4 & 0.752295429036 & 1.34939631834 & 3.17262289753 & 3.47005482786 \\
+    8 & 0.975165230479 & 0.81715301944  & 2.31878806948 & 4.29099790206 \\
+    \hline
+\end{tabular}
+\caption{Tempo de Speedup da média}
+\label{tab:timeq22speedup}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|llll|}
+    \hline
+     & \multicolumn{4}{c|}{Ordem da Matriz}\\
+     \hline
+    comm\_sz & 1024 & 2048 & 4096 & 8192  \\
+    \hline
+    1 & 1.0 & 1.0 & 1.0 & 1.0 \\
+    2 & 0.723190965291  & 0.813893202225 &  0.595833022732  & 0.987123531803 \\
+    4 & 0.188073857259&  0.337349079586 & 0.793155724383 & 0.867513706965  \\
+    8 & 0.12189565381 & 0.10214412743  &0.289848508685  &0.536374737757\\
+    \hline
+\end{tabular}
+\caption{Tempo de eficiência da média}
+\label{tab:timeq22efic}
+\end{table}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
