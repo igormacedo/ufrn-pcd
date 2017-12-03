@@ -1,0 +1,28 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.12}
+
+Download the source file \texttt{omp\_mat\_vect\_rand\_split.c} from the book’s web-site. Find a program that does cache profiling (e.g., Valgrind [49]) and compile the program according to the instructions in the cache profiler documentation. (For example, with Valgrind you will want a symbol table and full optimization. (With gcc use, gcc -g -O2 ... ). Now run the  program according to the instructions in the cache profiler documentation, using input $k \times (k \cdot 10^{6} )$, $(k \cdot 10^{3} ) \times (k \cdot 10^{3})$, and $(k \cdot 10^{6} ) \times k$. Choose k so large that the number of level 2 cache misses is of the order 10 6 for at least one of the input sets of data.
+
+a. How many level 1 cache write-misses occur with each of the three inputs?
+
+b. How many level 2 cache write-misses occur with each of the three inputs?
+
+c. Where do most of the write-misses occur? For which input data does the program have the most write-misses? Can you explain why?
+
+d. How many level 1 cache read-misses occur with each of the three inputs?
+
+e. How many level 2 cache read-misses occur with each of the three inputs?
+
+f. Where do most of the read-misses occur? For which input data does the program have the most read-misses? Can you explain why?
+
+g. Run the program with each of the three inputs, but without using the cache profiler. With which input is the program the fastest? With which input is the program the slowest? Can your observations about cache misses help
+explain the differences? How?
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

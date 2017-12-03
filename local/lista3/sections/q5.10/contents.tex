@@ -1,0 +1,46 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.10}
+
+Recall that all structured blocks modified by an unnamed critical directive form a single critical section. What happens if we have a number of atomic directives in which different variables are being modified? Are they all treated as a single critical section?
+We can write a small program that tries to determine this. The idea is to have all the threads simultaneously execute something like the following code
+
+\begin{lstlisting}[language=C]
+int i ;
+double my_sum = 0.0;
+for (i = 0; i < n; i++)
+# pragma omp atomic
+  my_sum += sin(i);
+\end{lstlisting}
+
+
+We can do this by modifying the code by a parallel directive:
+
+\begin{lstlisting}[language=C]
+# pragma omp parallel num threads ( thread count )
+{
+  int i ;
+  double my_sum = 0.0;
+  for(i = 0; i < n; i++)
+  # pragma omp atomic
+    my_sum += sin(i);
+}
+\end{lstlisting}
+
+
+Note that since my sum and i are declared in the parallel block, each thread has its own private copy. Now if we time this code for large n when thread count = 1 and we also time it when thread count > 1, then as long as thread count is less than the number of available cores, the run-time for the single-threaded run should be roughly the same as the time for the multithreaded run if the different threads’ executions of my sum += sin(i) are treated as different critical sections. On the other hand, if the different executions of my sum += sin(i) are all treated as a single critical section, the multithreaded run should be much slower than the single-threaded run. Write an OpenMP program that implements this test. Does your implementation of OpenMP allow simultaneous execution of updates to different variables when the updates are protected by atomic directives?
+
+\lstinputlisting[language=C]{sections/q5.10/code/omp_atomic.c}
+
+
+Os resultados encontrados apontam que em média, para 1 thread, o programa leva 0.004676s; para 2 threads, o programa leva 0.004968s; para 4 threads, 0.009019s; e para 8 threads, 0.018598s.
+
+Podemos perceber que a seção atomic é tratada como se fosse a mesma seção para todas as threads. Isso faz com que o tempo de execução com várias threads demore ainda mais tempo, pois cada thread precisa executar o bloco de código isoladamente. Contudo, essa pesquisa indica que essa forma de implementar o openMP não é garantida por padrão e pode ser que mude em outras implementações.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
