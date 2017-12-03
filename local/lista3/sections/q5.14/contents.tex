@@ -1,0 +1,31 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.14}
+
+Recall the matrix-vector multiplication example with an 8 $\times$ 8000000 matrix. Suppose that doubles use 8 bytes of memory and that a cache line is 64 bytes. Also suppose that our system consists of two dual-core processors.
+
+a. What is the minimum number of cache lines that are needed to store the vector y ?
+Sabendo que y terá 8 elementos, temos a possibilidade de que y[0] seja o primeiro elemento de uma linha de cache, e nesse caso poderá estar contido completamente dentro de uma linha apenas
+
+b. What is the maximum number of cache lines that are needed to store the vector y ? Se y[0] não for o primeiro elemento, temos que os elementos a partir de y[0] serão alocados em uma linha de cache, e quando a linha acabar, os elementos restantes serão alocados na linha de cache seguinte. Portanto, duas linhas é o máximo possível para alocar y.
+
+c. If the boundaries of cache lines always coincide with the boundaries of 8-byte double s, in how many different ways can the components of y be assigned to cache lines?
+Existem 8 formas diferentes de alocar os componentes de y em linhas de cache. Cada forma depende da posição inicial de y[0], que pode ocupar a primeira posição da linha de cache, a segunda, a terceira ou até a última, no total de 8.
+
+d. If we only consider which pairs of threads share a processor, in how many different ways can four threads be assigned to the processors in our computer? Here, we’re assuming that cores on the same processor share cache.
+É possível escolher threads 0 e 1, 0 e 2, 0 e 3, 1 e 2, 1 e 3, 2 e 3. Contudo, percebemos que ao escolher 0 e 1, automaticamente 2 e 3 vão para o outro processador. E de forma semelhante, as outras escolher também tem esse tipo de relação. Portanto, na realidade existem 3 possibilidades: 0 e 1, 0 e 2, 0 e 3.
+
+e. Is there an assignment of components to cache lines and threads to processors that will result in no false-sharing in our example? In other words, is it possible that the threads assigned to one processor will have their components of y in one cache line, and the threads assigned to the other processor
+will have their components in a different cache line?
+Sim, considerando o caso em que os 4 primeiros elementos (y[0]..y[3]) estão associados às threas 0 e 1, e presentes em uma única cache line, e os 4 últimos elementos (y[4]..y[7]) estão associados às threads 2 e 3 e em uma outra cache line.
+
+f. How many assignments of components to cache lines and threads to processors are there?
+Existem 3 possíveis formas de distribuir as threads e 8 formas de distribuir os elementos de y na cache, logo 24 formas no total.
+
+g. Of these assignments, how many will result in no false sharing? Para que não acontecá false sharing é necessário que thread 0 e 1 estejam no mesmo processador, e portanto 2 e 3 no outro. Porém a divisão de y na cache precisa ser exatamente y[0]..y[3] em uma linha e y[4]..y[7] em outra. Portanto apenas uma configuração não resulta em false sharing.
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:

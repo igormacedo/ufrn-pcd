@@ -4,22 +4,62 @@
 %% Responsavel:
 \subsection{Questão 5.12}
 
-Download the source file \texttt{omp\_mat\_vect\_rand\_split.c} from the book’s web-site. Find a program that does cache profiling (e.g., Valgrind [49]) and compile the program according to the instructions in the cache profiler documentation. (For example, with Valgrind you will want a symbol table and full optimization. (With gcc use, gcc -g -O2 ... ). Now run the  program according to the instructions in the cache profiler documentation, using input $k \times (k \cdot 10^{6} )$, $(k \cdot 10^{3} ) \times (k \cdot 10^{3})$, and $(k \cdot 10^{6} ) \times k$. Choose k so large that the number of level 2 cache misses is of the order 10 6 for at least one of the input sets of data.
+Download the source file \texttt{omp\_mat\_vect\_rand\_split.c} from the book’s web-site. Find a program that does cache profiling (e.g., Valgrind [49]) and compile the program according to the instructions in the cache profiler documentation. (For example, with Valgrind you will want a symbol table and full optimization. (With gcc use, gcc -g -O2 ... ). Now run the  program according to the instructions in the cache profiler documentation, using input $k \times (k \cdot 10^{6} )$, $(k \cdot 10^{3} ) \times (k \cdot 10^{3})$, and $(k \cdot 10^{6} ) \times k$. Choose k so large that the number of level 2 cache misses is of the order $10^{6}$ for at least one of the input sets of data.
 
-a. How many level 1 cache write-misses occur with each of the three inputs?
+Para $5 \times 5000000$
+\begin{lstlisting}[language=bash]
+Elapsed time = 1.012433e+00 seconds
+==9156== D1  misses: 10,004,702 (6,253,722 rd + 3,750,980 wr)
+==9156== LLd misses: 9,812,671  (6,061,749 rd + 3,750,922 wr)
+==9156== D1  miss rate: 1.3% (1.1% + 1.5%)
+==9156== LLd miss rate: 1.2% (1.1% + 1.5%)
+\end{lstlisting}
 
-b. How many level 2 cache write-misses occur with each of the three inputs?
+Para $5000 \times 5000$
+\begin{lstlisting}[language=bash]
+Elapsed time = 9.107981e-01 seconds
+==9814== D1  misses: 9,390,505  (6,263,207 rd + 3,127,298 wr)
+==9814== LLd misses: 6,255,177  (3,127,971 rd + 3,127,206 wr)
+==9814== D1  miss rate: 1.4% (1.3% + 1.5%)
+==9814== LLd miss rate: 0.9% (0.6% + 1.5%)
+\end{lstlisting}
 
-c. Where do most of the write-misses occur? For which input data does the program have the most write-misses? Can you explain why?
+Para $5000000 \times 5$
+\begin{lstlisting}[language=bash]
+Elapsed time = 1.123883e+00 seconds
+==10010== D1  misses:6,879,904 (3,128,830 rd + 3,751,074 wr)
+==10010== LLd misses: 6,878,965 (3,127,987 rd + 3,750,978 wr)
+==10010== D1  miss rate: 1.0% (0.6% + 1.8%)
+==10010== LLd miss rate: 1.0% (0.6% + 1.8%)
+\end{lstlisting}
 
-d. How many level 1 cache read-misses occur with each of the three inputs?
 
-e. How many level 2 cache read-misses occur with each of the three inputs?
+a. How many level 1 cache write-misses occur with each of the three inputs? Ver dados
 
-f. Where do most of the read-misses occur? For which input data does the program have the most read-misses? Can you explain why?
+b. How many level 2 cache write-misses occur with each of the three inputs? Ver dados
 
-g. Run the program with each of the three inputs, but without using the cache profiler. With which input is the program the fastest? With which input is the program the slowest? Can your observations about cache misses help
-explain the differences? How?
+c. Where do most of the write-misses occur? For which input data does the program have the most write-misses? Can you explain why? O maior número de write-misses está no último input, porém com pouca diferença em relação ao primeiro.
+
+d. How many level 1 cache read-misses occur with each of the three inputs? Ver dados
+
+e. How many level 2 cache read-misses occur with each of the three inputs? Ver dados
+
+f. Where do most of the read-misses occur? For which input data does the program have the most read-misses? Can you explain why? O maior número de read-misses acontece no primeiro input. A variável x[j] é provável de causar read-misses e ela contém bem mais elementos no primeiro input, que nos outros.
+
+g. Run the program with each of the three inputs, but without using the cache profiler. With which input is the program the fastest? With which input is the program the slowest? Can your observations about cache misses help explain the differences? How?
+
+Para $5 \times 5000000$:
+Elapsed time = 2.281404e-02 seconds
+
+Para $5000 \times 5000$:
+Elapsed time = 1.610494e-02 seconds
+
+Para $5000000 \times 5$:
+Elapsed time = 1.966500e-02 seconds
+
+O mais rápido acontece com o input do meio. Isso acontece pois as read-misses geralmente são mais custosas que write-misses, e vemos que no primeiro input, o número de read-misses é maior. Por outro lado, o terceiro input tem um número considerável de write-misses maior que o segundo input e, apesar de terem diferentes read-misses no L1, o L2 possui uma quantidade de read-misses equivalente e é importante considerar que o L2 é bem mais custoso que o L1 miss.
+
+
 
 
 %%% Local Variables:

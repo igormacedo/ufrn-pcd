@@ -1,0 +1,16 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../../relatorio.tex
+
+%% Responsavel:
+\subsection{Questão 5.13}
+
+Recall the matrix-vector multiplication example with the 8000 $\times$ 8000 input. Suppose that thread 0 and thread 2 are assigned to different processors. If a cache line contains 64 bytes or 8 double s, is it possible for false sharing between threads 0 and 2 to occur for any part of the vector y ? Why? What about if thread 0 and thread 3 are assigned to different processors; is it possible for false sharing to occur between them for any part of y?
+
+Para que aconteça false-sharing é preciso que elementos de uma mesma linha de cache estejam associados a threads diferentes, nesse caso. Dessa forma, consideramos que os elementos serão divididos como thread 0: 0 - 1999; thread 1: 2000 - 3999; thread 2: 4000 - 5999; e thread 3: 6000 - 7999.
+
+Se para a thread 0, mesmo considerando o elemento 1999 dentro de uma linha de cache, o elemento final dessa linha de cache poderia ser 2006 (isso consideranso 8 doubles na linha de cache, por isso 8 elementos) e portanto não existe possibilidade de um elemento de thread 0 estar em uma mesma linha de cache de um elemento da thread 2 ou mesmo da thread 3.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../relatorio"
+%%% End:
