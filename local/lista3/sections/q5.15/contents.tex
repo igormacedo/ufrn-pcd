@@ -4,6 +4,23 @@
 %% Responsavel:
 \subsection{Questão 5.15}
 
+a. Modify the matrix-vector multiplication program so that it pads the vector y when there’s a possibility of false sharing. The padding should be done so that if the threads execute in lock-step, there’s no possibility that a single cache line containing an element of y will be shared by two or more threads. Suppose, for example, that a cache line stores eight doubles and we run the program with four threads. If we allocate storage for at least 48 doubles in y , then, on each pass through the for i loop, there’s no possibility that two
+threads will simultaneously access the same cache line.
+
+b. Modify the matrix-vector multiplication program so that each thread uses private storage for its part of y during the for i loop. When a thread is done computing its part of y, it should copy its private storage into the shared variable.
+
+c. How does the performance of these two alternatives compare to the original program. How do they compare to each other?
+
+\lstinputlisting[language=C]{sections/q5.15/code/omp_mat_vect-withPad.c}
+
+\lstinputlisting[language=C]{sections/q5.15/code/omp_mat_vect_privt.c}
+
+c) O programa com variáveis privadas rodou em 9.583470e-02 seconds para 8 threads e matriz 9000x9000.
+
+O programa original, para as mesmas configurações teve média de 1.078727e-01 seconds.
+
+O programa com padding teve média de 1.063539e-01 seconds.
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../../relatorio"
